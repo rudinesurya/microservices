@@ -1,0 +1,53 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  web1:
+    host: localhost
+    paths:
+      - /web1
+      - /web1/*
+  web2:
+    host: localhost
+    paths:
+      - /web2
+      - /web2/*
+serviceEndpoints:
+  web1Service:
+    url: 'http://localhost:8001'
+  web2Service:
+    url: 'http://localhost:8002'
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  web1Pipeline:
+    apiEndpoints:
+      - web1
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: web1Service
+              changeOrigin: true
+              ignorePath: false
+              prependPath: true
+              stripPath: true
+  web2Pipeline:
+    apiEndpoints:
+      - web2
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: web2Service
+              changeOrigin: true
+              ignorePath: false
+              prependPath: true
+              stripPath: true
