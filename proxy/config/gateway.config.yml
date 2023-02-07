@@ -26,6 +26,8 @@ policies:
   - key-auth
   - log
   - oauth2
+  - jwt
+  - request-transformer
   - proxy
   - rate-limit
 pipelines:
@@ -33,6 +35,10 @@ pipelines:
     apiEndpoints:
       - web1
     policies:
+      - jwt:
+          - action:
+              secretOrPublicKey: 'company-secret'
+              checkCredentialExistence: false
       - proxy:
           - action:
               serviceEndpoint: web1Service
@@ -44,6 +50,10 @@ pipelines:
     apiEndpoints:
       - web2
     policies:
+      - jwt:
+          - action:
+              secretOrPublicKey: 'company-secret'
+              checkCredentialExistence: false
       - proxy:
           - action:
               serviceEndpoint: web2Service
